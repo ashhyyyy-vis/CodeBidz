@@ -1,0 +1,5 @@
+{
+  "name": "BidMaster Auction Platform",
+  "description": "A real-time auction platform with admin and bidder roles, credit management, and live bidding.",
+  "requestFramePermissions": []
+}
