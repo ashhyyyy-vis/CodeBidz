@@ -36,13 +36,13 @@ export const AdminDashboard = () => {
   }, [lastMessage]);
 
   const fetchAuctions = async () => {
-    const res = await fetch('/api/auctions');
+    const res = await fetch('http://localhost:5000/auction');
     const data = await res.json();
     setAuctions(data);
   };
 
   const fetchUsers = async () => {
-    const res = await fetch('/api/admin/users', {
+    const res = await fetch('http://localhost:5000/admin/users', {
       headers: { Authorization: `Bearer ${token}` }
     });
     const data = await res.json();
@@ -50,7 +50,7 @@ export const AdminDashboard = () => {
   };
 
   const fetchBids = async () => {
-    const res = await fetch('/api/reports/bids', {
+    const res = await fetch('http://localhost:5000/admin/bids', {
       headers: { Authorization: `Bearer ${token}` }
     });
     const data = await res.json();
@@ -59,7 +59,7 @@ export const AdminDashboard = () => {
 
   const handleCreateAuction = async (e: React.FormEvent) => {
     e.preventDefault();
-    await fetch('/api/auctions', {
+    await fetch('http://localhost:5000/auction', {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -76,8 +76,8 @@ export const AdminDashboard = () => {
     setActiveTab('auctions');
   };
 
-  const handleAssignCredits = async (userId: number, amount: number) => {
-    await fetch(`/api/admin/users/${userId}/credits`, {
+  const handleAssignCredits = async (userId: string, amount: number) => {
+    await fetch(`http://localhost:5000/admin/users/${userId}/credits`, {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -88,15 +88,15 @@ export const AdminDashboard = () => {
     fetchUsers();
   };
 
-  const handleCloseAuction = async (auctionId: number) => {
-    await fetch(`/api/auctions/${auctionId}/close`, {
+  const handleCloseAuction = async (auctionId: string) => {
+    await fetch(`http://localhost:5000/auction/${auctionId}/close`, {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` }
     });
   };
 
   const handleGenerateMockData = async () => {
-    await fetch('/api/admin/mock-data', {
+    await fetch('http://localhost:5000/admin/mock-data', {
       method: 'POST',
       headers: { Authorization: `Bearer ${token}` }
     });

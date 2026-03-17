@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Gavel, Lock } from 'lucide-react';
+import { Lock, Mail, User } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
+import { api } from '../api/axios';
 
-export const Login = () => {
+export function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -17,21 +18,19 @@ export const Login = () => {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        login(data.token, data.user);
+      const res = await api.post('/auth/login', { username, password });
+      
+      login(res.data.token, res.data.user);
+      navigate('/dashboard');
+    } catch (err: any) {
+      console.error('Login error:', err);
+      if (err.code === 'ERR_NETWORK') {
+        setError('Cannot connect to server. Please make sure the backend is running on localhost:5000');
+      } else if (err.response?.data?.error) {
+        setError(err.response.data.error);
       } else {
-        setError(data.error || 'Login failed');
+        setError('An error occurred. Please try again.');
       }
-    } catch (err) {
-      setError('An error occurred. Please try again.');
     } finally {
       setLoading(false);
     }

@@ -32,18 +32,18 @@ export const BidderDashboard = () => {
   }, [lastMessage]);
 
   const fetchAuctions = async () => {
-    const res = await fetch('/api/auctions');
+    const res = await fetch('http://localhost:5000/auction');
     const data = await res.json();
     setAuctions(data);
   };
 
-  const handleBid = async (auctionId: number, amount: number) => {
+  const handleBid = async (auctionId: string, amount: number) => {
     sendMessage('PLACE_BID', { token, auctionId, amount });
   };
 
   const handleAddCredits = async () => {
     try {
-      await fetch('/api/add-credits', {
+      await fetch('http://localhost:5000/add-credits', {
         method: 'POST',
         headers: { 'Authorization': `Bearer ${token}` }
       });

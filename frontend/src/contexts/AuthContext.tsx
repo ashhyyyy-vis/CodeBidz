@@ -1,9 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../api/axios';
 
 interface User {
-  id: number;
+  id: string;
   username: string;
+  email: string;
   role: 'admin' | 'bidder';
   credits?: number;
   availableCredits?: number;
@@ -28,17 +30,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const refreshUser = async () => {
     if (!token) return;
     try {
-      const res = await fetch('/api/auth/me', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        setUser(data);
-      } else {
-        logout();
-      }
+      const res = await api.get('/auth/me');
+      setUser(res.data);
     } catch (error) {
       console.error('Failed to fetch user', error);
+      logout();
     }
   };
 
