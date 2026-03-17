@@ -31,3 +31,4 @@ CREATE TABLE credit_transactions (
     reason TEXT,
     created_at TIMESTAMP DEFAULT NOW()
 );
+
