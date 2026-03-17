@@ -1,11 +1,27 @@
 import { supabase } from "../config/supabase"
 
-export async function getAllAuctions() {
+export async function getActiveAuctions() {
   const { data } = await supabase
     .from("auctions")
     .select("*")
     .eq("status", "active")
 
+  return data
+}
+
+export async function getInactiveAuctions() {
+  const { data } = await supabase
+    .from("auctions")
+    .select("*")
+    .eq("status", "closed")
+
+  return data
+}
+
+export async function getAllAuctions() {
+  const { data } = await supabase
+    .from("auctions")
+    .select("*")
   return data
 }
 

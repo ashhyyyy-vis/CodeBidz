@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Login from "./pages/Login"
 import Dashboard from "./pages/Dashboard"
 import AuctionRoom from "./pages/AuctionRoom"
-
+import LoginSelect from "./pages/LoginSelect"
 function App() {
   return (
     <BrowserRouter>
@@ -12,7 +12,9 @@ function App() {
 
         <Route path="/" element={<Dashboard />} />
 
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<LoginSelect />} />
+
+        <Route path="/login/:role" element={<Login />} />
 
         <Route path="/auction/:id" element={<AuctionRoom />} />
 

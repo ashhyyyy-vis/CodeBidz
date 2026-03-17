@@ -1,9 +1,31 @@
 import { Request, Response } from "express"
 import * as auctionService from "../services/auctionService"
 
-export async function getAllAuctions(req: Request, res: Response) {
-  const auctions = await auctionService.getAllAuctions()
-  res.json(auctions)
+export async function getAuctions(req: Request, res: Response) {
+  
+  const { filter } = req.query
+
+  if(filter==="all"){
+    const auctions= await auctionService.getAllAuctions();
+    res.json(auctions)
+    return;
+  }
+  else if(filter==="open"){
+    const auctions= await auctionService.getActiveAuctions();
+    res.json(auctions)
+    return;
+  }
+  else if(filter=="closed"){
+    const auctions= await auctionService.getInactiveAuctions();
+    res.json(auctions)
+    return;
+  }
+  else{
+    const auctions="Invalid filter";
+    res.json(auctions)
+    return;
+  }
+
 }
 
 export async function getAuction(req: Request, res: Response) {
