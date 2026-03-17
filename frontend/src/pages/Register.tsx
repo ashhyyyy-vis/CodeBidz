@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Gavel, Lock } from 'lucide-react';
+import { UserPlus } from 'lucide-react';
 
-export const Login = () => {
+export const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -17,7 +15,7 @@ export const Login = () => {
     setLoading(true);
 
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
@@ -26,9 +24,9 @@ export const Login = () => {
       const data = await res.json();
 
       if (res.ok) {
-        login(data.token, data.user);
+        navigate('/login');
       } else {
-        setError(data.error || 'Login failed');
+        setError(data.error || 'Registration failed');
       }
     } catch (err) {
       setError('An error occurred. Please try again.');
@@ -42,13 +40,13 @@ export const Login = () => {
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-2xl shadow-xl border border-slate-100">
         <div>
           <div className="mx-auto h-12 w-12 bg-emerald-100 rounded-xl flex items-center justify-center">
-            <Lock className="h-6 w-6 text-emerald-600" />
+            <UserPlus className="h-6 w-6 text-emerald-600" />
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-slate-900">Sign in to your account</h2>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-slate-900">Create an account</h2>
           <p className="mt-2 text-center text-sm text-slate-600">
-            Or{' '}
-            <button onClick={() => navigate('/register')} className="font-medium text-emerald-600 hover:text-emerald-500">
-              create a new account
+            Already have an account?{' '}
+            <button onClick={() => navigate('/login')} className="font-medium text-emerald-600 hover:text-emerald-500">
+              Sign in
             </button>
           </p>
         </div>
@@ -65,7 +63,7 @@ export const Login = () => {
                 type="text"
                 required
                 className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
-                placeholder="Enter your username"
+                placeholder="Choose a username"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
@@ -76,7 +74,7 @@ export const Login = () => {
                 type="password"
                 required
                 className="appearance-none relative block w-full px-3 py-2 border border-slate-300 placeholder-slate-400 text-slate-900 rounded-lg focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 focus:z-10 sm:text-sm"
-                placeholder="Enter your password"
+                placeholder="Create a password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -89,7 +87,7 @@ export const Login = () => {
               disabled={loading}
               className="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50 transition-colors"
             >
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? 'Creating account...' : 'Register'}
             </button>
           </div>
         </form>
